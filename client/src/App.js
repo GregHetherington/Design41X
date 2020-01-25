@@ -1,13 +1,14 @@
-import React from 'react';
-import './App.css';
-import APITest from './Components/APITest'
+import React from "react";
+import "./App.css";
+import GarbageCanList from "./Components/GarbageCanList";
+import NavbarHeader from "./Components/NavbarHeader";
 
 function App() {
   return (
     <div className="App">
+      <NavbarHeader />
       <header className="App-header">
-        <p>Design 41X Front-End</p>
-        <APITest/>
+        <GarbageCanList />
       </header>
     </div>
   );
