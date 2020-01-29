@@ -12,3 +12,8 @@ By: Greg Hetherington
 - `cd server`
 - `npm start` 
 - open `localhost:9000`
+
+### How to Deploy
+- `git add .`
+- `git commit -am 'prepare to deploy'`
+- `git subtree push --prefix api heroku master`
