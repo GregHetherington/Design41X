@@ -24,19 +24,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//Static file declaration
-app.use(express.static(path.join(__dirname, "client/build")));
-
+//Routes
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/database", databaseRouter);
 
+//Static file declaration
+app.use(express.static(path.join(__dirname, "client/build")));
+
 //production mode
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
   app.get("*", (req, res) => {
-    res.sendfile(path.join((__dirname = "client/public/index.html")));
+    res.sendFile(path.join((__dirname = "client/public/index.html")));
   });
 }
 
