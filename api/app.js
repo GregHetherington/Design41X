@@ -24,14 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//Routes
+//Static file declaration
+app.use(express.static(path.join(__dirname, "client/build")));
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/database", databaseRouter);
-
-//Static file declaration
-app.use(express.static(path.join(__dirname, "client/build")));
 
 //production mode
 if (process.env.NODE_ENV === "production") {
