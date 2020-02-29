@@ -3,13 +3,18 @@ React JS client side, Node JS server
 
 By: Greg Hetherington
 
+### Start Client and Server Proxy on same port
+- `cd api`
+- `npm run dev` 
+- open `localhost:3000`
+
 ### Client Setup: React JS
-- `cd client`
+- `cd api/client`
 - `npm start` 
 - open `localhost:3000`
 
 ### Server Setup: Node JS using Express
-- `cd server`
+- `cd api`
 - `npm start` 
 - open `localhost:9000`
 

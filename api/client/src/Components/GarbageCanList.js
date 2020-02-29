@@ -15,7 +15,7 @@ export default class GarbageCanList extends Component {
   }
 
   callAPI() {
-    fetch("/database")
+    fetch("/garbageCan")
       .then(res => res.text())
       .then(res =>
         this.setState({ isLoading: false, garbageCans: JSON.parse(res) })
@@ -45,11 +45,11 @@ export default class GarbageCanList extends Component {
 
     garbageCans.sort(function(a, b) {
       if (sortedBy === SORTING.name) {
-        return a._name.localeCompare(b._name);
+        return a.name.localeCompare(b.name);
       } else if (sortedBy === SORTING.empty) {
-        return a._percentFull - b._percentFull;
+        return a.percentFull - b.percentFull;
       } else if (sortedBy === SORTING.full) {
-        return b._percentFull - a._percentFull;
+        return b.percentFull - a.percentFull;
       }
     });
 
@@ -100,9 +100,9 @@ export default class GarbageCanList extends Component {
         {garbageCans.length > 0 &&
           garbageCans.map(garbageCan => (
             <div>
-              <span style={{ fontSize: "28px" }}>{garbageCan._name}</span>
+              <span style={{ fontSize: "28px" }}>{garbageCan.name}</span>
               <PieChart
-                reveal={garbageCan._percentFull * 100}
+                reveal={garbageCan.percentFull * 100}
                 lineWidth={15}
                 radius={40}
                 style={{ height: "250px" }}
@@ -110,8 +110,8 @@ export default class GarbageCanList extends Component {
                 cy={50}
                 data={[
                   {
-                    color: this.calculateColour(garbageCan._percentFull),
-                    value: garbageCan._percentFull * 100
+                    color: this.calculateColour(garbageCan.percentFull),
+                    value: garbageCan.percentFull * 100
                   }
                 ]}
                 label

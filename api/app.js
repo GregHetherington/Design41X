@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
-app.use("/database", databaseRouter);
+app.use("/garbageCan", databaseRouter);
 
 //production mode
 if (process.env.NODE_ENV === "production") {

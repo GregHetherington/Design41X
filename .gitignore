@@ -1,2 +1,3 @@
 # Ignore all Enviroment variables files
 *.env
+.vscode/settings.json
