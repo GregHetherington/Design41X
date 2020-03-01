@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
-import GarbageCanList from "./Components/GarbageCanList";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import NavbarHeader from "./Components/NavbarHeader";
+import GarbageCanList from "./Components/GarbageCanList";
+import HistoryPage from "./Components/HistoryPage";
 
 class App extends Component {
   render() {
@@ -9,7 +12,18 @@ class App extends Component {
       <div className="App">
         <NavbarHeader />
         <header className="App-header">
-          <GarbageCanList />
+          <Router>
+            <div style={{ width: "100%" }}>
+              <Switch>
+                <Route exact path="/">
+                  <GarbageCanList />
+                </Route>
+                <Route path="/history">
+                  <HistoryPage />
+                </Route>
+              </Switch>
+            </div>
+          </Router>
         </header>
       </div>
     );

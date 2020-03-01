@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navbar } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 export default class NavbarHeader extends Component {
   render() {
@@ -11,8 +11,12 @@ export default class NavbarHeader extends Component {
         sticky="top"
         variant="dark"
       >
-        <Navbar.Brand href="#home">Trash-Board</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Brand href="/">Trash-Board</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link active href="/history">
+            History
+          </Nav.Link>
+        </Nav>
       </Navbar>
     );
   }

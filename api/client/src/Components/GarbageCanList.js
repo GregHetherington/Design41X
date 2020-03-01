@@ -14,7 +14,7 @@ export default class GarbageCanList extends Component {
     this.state = { garbageCans: [], isLoading: true, sortedBy: SORTING.name };
   }
 
-  callAPI() {
+  fetchGarbageCanList() {
     fetch("/garbageCan")
       .then(res => res.text())
       .then(res =>
@@ -37,7 +37,7 @@ export default class GarbageCanList extends Component {
   }
 
   componentWillMount() {
-    this.callAPI();
+    this.fetchGarbageCanList();
   }
 
   render() {
@@ -73,7 +73,7 @@ export default class GarbageCanList extends Component {
     );
 
     const loaded = (
-      <div style={{ width: "100%" }}>
+      <div>
         <Dropdown style={{ textAlign: "left", padding: "15px" }}>
           <Dropdown.Toggle variant="warning" id="dropdown-basic">
             Sort By
@@ -99,7 +99,7 @@ export default class GarbageCanList extends Component {
         </Dropdown>
         {garbageCans.length > 0 &&
           garbageCans.map(garbageCan => (
-            <div>
+            <div key={garbageCan.deviceId}>
               <span style={{ fontSize: "28px" }}>{garbageCan.name}</span>
               <PieChart
                 reveal={garbageCan.percentFull * 100}
