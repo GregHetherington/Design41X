@@ -28,7 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use("/", indexRouter);
-app.use("/history", indexRouter);
 app.use("/users", usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/garbageCan", databaseRouter);
@@ -42,7 +41,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 //build mode
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/public/index.html"));
 });
 

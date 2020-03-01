@@ -113,7 +113,6 @@ export default class HistoryPage extends Component {
             scale="time"
             domain={["auto", "auto"]}
             type="number"
-            tickCount={1}
             tickFormatter={tickItem => moment(tickItem).format("LT")}
           />
           <YAxis type="number" domain={[0, 1]} />
