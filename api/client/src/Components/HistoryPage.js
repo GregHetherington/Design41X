@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import PieChart from "react-minimal-pie-chart";
 import {
-  ResponsiveContainer,
   AreaChart,
   Area,
   Tooltip,
@@ -68,6 +67,7 @@ export default class HistoryPage extends Component {
           reveal={100}
           lineWidth={15}
           radius={40}
+          style={{ height: "250px" }}
           data={[
             {
               color: "#FFFFFF",
@@ -102,46 +102,50 @@ export default class HistoryPage extends Component {
           </Dropdown.Menu>
         </Dropdown>
 
-        <AreaChart
-          width={380}
-          height={400}
-          margin={{ top: 20, right: 35, bottom: 20, left: 20 }}
-          data={historyData}
-        >
-          <XAxis
-            dataKey="updatedTime"
-            scale="time"
-            domain={["auto", "auto"]}
-            type="number"
-            tickFormatter={tickItem => moment(tickItem).format("LT")}
-          />
-          <YAxis type="number" domain={[0, 1]} />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip
-            labelStyle={{ color: "black" }}
-            itemStyle={{ color: "black" }}
-            formatter={function(value, name) {
-              return `${value * 100} %`;
-            }}
-            labelFormatter={function(value) {
-              return `Date: ${moment(value).format("llll")}`;
-            }}
-          />
-          <Area
-            type="monotone"
-            dataKey="percentFull"
-            stroke="#c4a043"
-            dot
-            fillOpacity={1}
-            fill="url(#colorUv)"
-          />
-          <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="25%" stopColor="#c4a043" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#c4a043" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-        </AreaChart>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <AreaChart
+            width={1200}
+            height={600}
+            margin={{ top: 20, right: 35, bottom: 20, left: 20 }}
+            data={historyData}
+          >
+            <XAxis
+              dataKey="updatedTime"
+              scale="time"
+              domain={["auto", "auto"]}
+              type="number"
+              minTickGap={40}
+              padding={{ left: 40, right: 40 }}
+              tickFormatter={tickItem => moment(tickItem).format("MMM Do YY")}
+            />
+            <YAxis type="number" domain={[0, 1]} />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip
+              labelStyle={{ color: "black" }}
+              itemStyle={{ color: "black" }}
+              formatter={function(value, name) {
+                return `${value * 100} %`;
+              }}
+              labelFormatter={function(value) {
+                return `Date: ${moment(value).format("llll")}`;
+              }}
+            />
+            <Area
+              type="monotone"
+              dataKey="percentFull"
+              stroke="#c4a043"
+              dot
+              fillOpacity={1}
+              fill="url(#colorUv)"
+            />
+            <defs>
+              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="25%" stopColor="#c4a043" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#c4a043" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+          </AreaChart>
+        </div>
       </div>
     );
 

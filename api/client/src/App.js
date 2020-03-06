@@ -1,29 +1,40 @@
 import React, { Component } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import NavbarHeader from "./Components/NavbarHeader";
 import GarbageCanList from "./Components/GarbageCanList";
 import HistoryPage from "./Components/HistoryPage";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { activePage: "home" };
+
+    this.pageHandler = this.pageHandler.bind(this);
+  }
+
+  pageHandler(page) {
+    if (page !== this.state.activePage) {
+      this.setState({ activePage: page });
+    }
+  }
+
   render() {
+    const { activePage } = this.state;
+    let page;
+    if (activePage === "home") {
+      page = <GarbageCanList />;
+    } else if (activePage === "history") {
+      page = <HistoryPage />;
+    } else {
+      page = <GarbageCanList />;
+    }
+
     return (
       <div className="App">
-        <NavbarHeader />
+        <NavbarHeader pageHandler={this.pageHandler} />
         <header className="App-header">
-          <Router>
-            <div style={{ width: "100%" }}>
-              <Switch>
-                <Route exact path="/">
-                  <GarbageCanList />
-                </Route>
-                <Route path="/history">
-                  <HistoryPage />
-                </Route>
-              </Switch>
-            </div>
-          </Router>
+          <div style={{ width: "100%" }}>{page}</div>
         </header>
       </div>
     );

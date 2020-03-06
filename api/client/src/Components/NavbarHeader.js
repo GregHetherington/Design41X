@@ -11,9 +11,11 @@ export default class NavbarHeader extends Component {
         sticky="top"
         variant="dark"
       >
-        <Navbar.Brand href="/">Trash-Board</Navbar.Brand>
+        <Navbar.Brand onClick={() => this.props.pageHandler("home")}>
+          DashBoard
+        </Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link active href="/history">
+          <Nav.Link onClick={() => this.props.pageHandler("history")}>
             History
           </Nav.Link>
         </Nav>

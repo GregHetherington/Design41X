@@ -59,6 +59,7 @@ export default class GarbageCanList extends Component {
           reveal={100}
           lineWidth={15}
           radius={40}
+          style={{ height: "250px" }}
           data={[
             {
               color: "#FFFFFF",
