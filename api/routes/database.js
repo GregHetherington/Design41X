@@ -24,8 +24,24 @@ router.get("/", function(req, res, next) {
 });
 
 router.post("/update", function(req, res) {
-  const { deviceId, percentFull } = req.query;
-  console.log("ID: " + deviceId + ",%: " + percentFull);
+  let { deviceId, percentFull, irbits } = req.query;
+  console.log(
+    "ID: " +
+      deviceId +
+      ", irbits: " +
+      irbits +
+      " (requires one of irbits or percentFull)"
+  );
+
+  if (!percentFull && irbits[2] === "1") {
+    percentFull = "1";
+  } else if (!percentFull && irbits[1] === "1") {
+    percentFull = "0.66";
+  } else if (!percentFull && irbits[0] === "1") {
+    percentFull = "0.33";
+  } else if (!percentFull) {
+    percentFull = "0";
+  }
 
   const dbConnect = process.env.DB_CONN;
   MongoClient.connect(dbConnect, { useUnifiedTopology: true }, function(
@@ -36,13 +52,17 @@ router.post("/update", function(req, res) {
     var dbo = db.db("GarbageDevice");
 
     try {
-      dbo
-        .collection("GarbageCans")
-        .updateOne(
-          { deviceId: deviceId },
-          { $set: { percentFull: percentFull, lastUpdated: Date.now() } },
-          { upsert: false }
-        );
+      dbo.collection("GarbageCans").updateOne(
+        { deviceId: deviceId },
+        {
+          $set: {
+            percentFull: percentFull,
+            irbits: irbits,
+            lastUpdated: Date.now()
+          }
+        },
+        { upsert: false }
+      );
     } catch (e) {
       res.send(e);
     }

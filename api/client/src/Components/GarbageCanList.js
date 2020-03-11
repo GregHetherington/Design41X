@@ -1,6 +1,18 @@
 import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import PieChart from "react-minimal-pie-chart";
+import styled from "styled-components";
+
+const GarbageCanListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
+const GarbageCanListItem = styled.div`
+  flex: 0 20%;
+  margin-bottom: 2%;
+`;
 
 const SORTING = {
   name: "Name",
@@ -25,15 +37,6 @@ export default class GarbageCanList extends Component {
   calculateColour(percentFull) {
     var hue = ((1 - percentFull) * 120).toString(10);
     return ["hsl(", hue, ",100%,50%)"].join("");
-  }
-
-  calculateText(percentFull) {
-    if (percentFull < 0.01) {
-      return "Empty";
-    } else if (percentFull > 0.99) {
-      return "Full";
-    }
-    return percentFull * 100;
   }
 
   componentWillMount() {
@@ -98,35 +101,45 @@ export default class GarbageCanList extends Component {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        {garbageCans.length > 0 &&
-          garbageCans.map(garbageCan => (
-            <div key={garbageCan.deviceId}>
-              <span style={{ fontSize: "28px" }}>{garbageCan.name}</span>
-              <PieChart
-                reveal={garbageCan.percentFull * 100}
-                lineWidth={15}
-                radius={40}
-                style={{ height: "250px" }}
-                cx={50}
-                cy={50}
-                data={[
-                  {
-                    color: this.calculateColour(garbageCan.percentFull),
-                    value: garbageCan.percentFull * 100
-                  }
-                ]}
-                label
-                labelPosition={0}
-                labelStyle={{
-                  fontFamily: "sans-serif",
-                  fontSize: "25px"
-                }}
-                background="#bfbfbf"
-                rounded
-                animate
-              />
-            </div>
-          ))}
+        <GarbageCanListContainer class="flex-container">
+          {garbageCans.length > 0 &&
+            garbageCans.map(garbageCan => (
+              <GarbageCanListItem key={garbageCan.deviceId}>
+                <span style={{ fontSize: "20px", padding: "50px" }}>
+                  {garbageCan.name}
+                </span>
+                <img
+                  src="https://img.icons8.com/ios/150/000000/waste.png"
+                  style={{
+                    filter: "invert(100%)"
+                  }}
+                ></img>
+                <PieChart
+                  reveal={garbageCan.percentFull * 100}
+                  lineWidth={15}
+                  radius={40}
+                  style={{ height: "100px" }}
+                  cx={50}
+                  cy={50}
+                  data={[
+                    {
+                      color: this.calculateColour(garbageCan.percentFull),
+                      value: garbageCan.percentFull * 100
+                    }
+                  ]}
+                  label
+                  labelPosition={0}
+                  labelStyle={{
+                    fontFamily: "sans-serif",
+                    fontSize: "25px"
+                  }}
+                  background="#bfbfbf"
+                  rounded
+                  animate
+                />
+              </GarbageCanListItem>
+            ))}
+        </GarbageCanListContainer>
       </div>
     );
 
