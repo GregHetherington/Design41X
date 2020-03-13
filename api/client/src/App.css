@@ -15,8 +15,8 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
+  min-height: 92vh;
+  display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -26,6 +26,18 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.blinking{
+  animation:blinkingText 1.2s infinite;
+}
+
+@keyframes blinkingText{
+  0%{     color: red;    }
+  49%{    color: red; }
+  50%{    color: transparent; }
+  99%{    color:red;  }
+  100%{   color: red;    }
 }
 
 @keyframes App-logo-spin {

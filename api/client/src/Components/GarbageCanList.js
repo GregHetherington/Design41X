@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import PieChart from "react-minimal-pie-chart";
+import TweenOne from "rc-tween-one";
+import SvgDrawPlugin from "rc-tween-one/lib/plugin/SvgDrawPlugin";
 import styled from "styled-components";
+TweenOne.plugins.push(SvgDrawPlugin);
 
 const GarbageCanListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
+//  margin-bottom: -50px;
 const GarbageCanListItem = styled.div`
-  flex: 0 20%;
-  margin-bottom: 2%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+  margin-right: 2%;
 `;
 
 const SORTING = {
@@ -37,6 +43,47 @@ export default class GarbageCanList extends Component {
   calculateColour(percentFull) {
     var hue = ((1 - percentFull) * 120).toString(10);
     return ["hsl(", hue, ",100%,50%)"].join("");
+  }
+
+  verifyIrbits(irbits) {
+    if (irbits) {
+      //verify IR sensors are not in error state
+      for (let i = 0; i < 2; i++) {
+        if (irbits[i] < irbits[i + 1]) {
+          return false;
+        }
+      }
+    } else {
+      return true;
+    }
+  }
+
+  getSensorDisplayDot(irSensorNumber, value) {
+    return (
+      <svg
+        width="20"
+        height="50"
+        version="1.2"
+        style={{
+          display: "block",
+          marginRight: "auto",
+          marginLeft: "auto",
+          position: "relative",
+          left: "-54px",
+          bottom: 156 + irSensorNumber * 84 + "px",
+          visibility: value === "1" ? "visable" : "hidden"
+        }}
+      >
+        <circle
+          cx="7"
+          cy="7"
+          r="3"
+          stroke="GoldenRod"
+          fill="GoldenRod"
+          stroke-width="3"
+        />
+      </svg>
+    );
   }
 
   componentWillMount() {
@@ -105,38 +152,73 @@ export default class GarbageCanList extends Component {
           {garbageCans.length > 0 &&
             garbageCans.map(garbageCan => (
               <GarbageCanListItem key={garbageCan.deviceId}>
-                <span style={{ fontSize: "20px", padding: "50px" }}>
+                <span
+                  style={{
+                    fontSize: "18px",
+                    padding: "10px",
+                    maxWidth: "200px"
+                  }}
+                >
                   {garbageCan.name}
                 </span>
                 <img
-                  src="https://img.icons8.com/ios/150/000000/waste.png"
+                  src="trashCanWithSensors.png"
+                  width="150"
+                  height="150"
                   style={{
-                    filter: "invert(100%)"
+                    filter: "invert(100%)",
+                    display: "block",
+                    marginRight: "auto",
+                    marginLeft: "auto"
                   }}
                 ></img>
-                <PieChart
-                  reveal={garbageCan.percentFull * 100}
-                  lineWidth={15}
-                  radius={40}
-                  style={{ height: "100px" }}
-                  cx={50}
-                  cy={50}
-                  data={[
-                    {
-                      color: this.calculateColour(garbageCan.percentFull),
-                      value: garbageCan.percentFull * 100
-                    }
-                  ]}
-                  label
-                  labelPosition={0}
-                  labelStyle={{
-                    fontFamily: "sans-serif",
-                    fontSize: "25px"
+                <svg
+                  width="100"
+                  height="104"
+                  version="1.2"
+                  style={{
+                    display: "block",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    position: "relative",
+                    left: "7px",
+                    bottom: "113px",
+                    filter: "opacity(50%)",
+                    visibility:
+                      this.verifyIrbits(garbageCan.irbits) === false
+                        ? "hidden"
+                        : "visable"
                   }}
-                  background="#bfbfbf"
-                  rounded
-                  animate
-                />
+                >
+                  <TweenOne
+                    animation={{
+                      SVGDraw: garbageCan.percentFull * 100 + 0.01 + "%",
+                      duration: 1000
+                    }}
+                    style={{
+                      fill: "none",
+                      strokeWidth: 151,
+                      stroke: this.calculateColour(garbageCan.percentFull)
+                    }}
+                    component="path"
+                    d="m 10 104 v -104"
+                  />
+                </svg>
+                {this.getSensorDisplayDot(0, garbageCan.irbits[0])}
+                {this.getSensorDisplayDot(1, garbageCan.irbits[1])}
+                {this.getSensorDisplayDot(2, garbageCan.irbits[2])}
+                <span
+                  style={{
+                    marginTop: "-240px",
+                    visibility:
+                      this.verifyIrbits(garbageCan.irbits) === false
+                        ? "visable"
+                        : "hidden"
+                  }}
+                  class="blinking"
+                >
+                  Sensor ERROR
+                </span>
               </GarbageCanListItem>
             ))}
         </GarbageCanListContainer>

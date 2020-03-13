@@ -10,13 +10,19 @@ export default class NavbarHeader extends Component {
         bg="dark"
         sticky="top"
         variant="dark"
+        style={{ height: "8vh", justifyContent: "flex-start" }}
       >
         <Navbar.Brand onClick={() => this.props.pageHandler("home")}>
           DashBoard
         </Navbar.Brand>
-        <Nav className="mr-auto">
+        <Nav style={{ paddingLeft: "10px" }}>
           <Nav.Link onClick={() => this.props.pageHandler("history")}>
             History
+          </Nav.Link>
+        </Nav>
+        <Nav style={{ paddingLeft: "10px" }}>
+          <Nav.Link onClick={() => this.props.pageHandler("about")}>
+            About
           </Nav.Link>
         </Nav>
       </Navbar>

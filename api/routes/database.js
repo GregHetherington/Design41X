@@ -23,25 +23,35 @@ router.get("/", function(req, res, next) {
   });
 });
 
-router.post("/update", function(req, res) {
-  let { deviceId, percentFull, irbits } = req.query;
-  console.log(
-    "ID: " +
-      deviceId +
-      ", irbits: " +
-      irbits +
-      " (requires one of irbits or percentFull)"
-  );
+function calculatePercentFull(irbits) {
+  if (irbits) {
+    //verify IR sensors are not in error state
+    for (i = 0; i < 2; i++) {
+      if (irbits[i] < irbits[i + 1]) {
+        return "-1";
+      }
+    }
 
-  if (!percentFull && irbits[2] === "1") {
-    percentFull = "1";
-  } else if (!percentFull && irbits[1] === "1") {
-    percentFull = "0.66";
-  } else if (!percentFull && irbits[0] === "1") {
-    percentFull = "0.33";
-  } else if (!percentFull) {
-    percentFull = "0";
+    //calculate percentFull based on valid IR bits
+    if (irbits[2] === "1") {
+      return "1";
+    } else if (irbits[1] === "1") {
+      return "0.66";
+    } else if (irbits[0] === "1") {
+      return "0.33";
+    } else if (irbits[0] === "0") {
+      return "0";
+    }
+  } else {
+    return "-1";
   }
+}
+
+router.post("/update", function(req, res) {
+  const { deviceId, irbits } = req.query;
+  console.log("ID: " + deviceId + ", irbits: " + irbits);
+
+  let percentFull = calculatePercentFull(irbits);
 
   const dbConnect = process.env.DB_CONN;
   MongoClient.connect(dbConnect, { useUnifiedTopology: true }, function(
@@ -71,7 +81,9 @@ router.post("/update", function(req, res) {
       dbo.collection("UpdateHistory").insert({
         updatedTime: Date.now(),
         deviceId: deviceId,
-        percentFull: percentFull
+        percentFull: percentFull,
+        irbits: irbits,
+        details: percentFull === "-1" ? "Sensor Error" : "Stardard Update"
       });
     } catch (e) {
       res.send(e);

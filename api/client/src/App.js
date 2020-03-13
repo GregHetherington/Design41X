@@ -4,6 +4,7 @@ import "./App.css";
 import NavbarHeader from "./Components/NavbarHeader";
 import GarbageCanList from "./Components/GarbageCanList";
 import HistoryPage from "./Components/HistoryPage";
+import AboutPage from "./Components/AboutPage";
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +27,8 @@ class App extends Component {
       page = <GarbageCanList />;
     } else if (activePage === "history") {
       page = <HistoryPage />;
+    } else if (activePage === "about") {
+      page = <AboutPage />;
     } else {
       page = <GarbageCanList />;
     }
