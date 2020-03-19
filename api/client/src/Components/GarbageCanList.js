@@ -217,7 +217,7 @@ export default class GarbageCanList extends Component {
                   }}
                   class="blinking"
                 >
-                  Sensor ERROR
+                  SENSOR ERROR
                 </span>
               </GarbageCanListItem>
             ))}
